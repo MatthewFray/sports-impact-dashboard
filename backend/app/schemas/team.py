@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Dict
 
 class Team(BaseModel):
     id: int
@@ -12,3 +12,9 @@ class TeamImpact(BaseModel):
     season: int
     metric: str
     value: float
+
+class TeamImpactSummary(BaseModel):
+    team_id: int
+    season: int
+    metrics: Dict[str, float]
+    impact_score: float
