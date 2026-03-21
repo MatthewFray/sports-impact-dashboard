@@ -1,19 +1,25 @@
-from pydantic import BaseModel
-from typing import Optional, Dict
+from dataclasses import dataclass
+from typing import Dict, Optional
 
-class Team(BaseModel):
+
+@dataclass
+class Team:
     id: int
     name: str
     league: str
     city: Optional[str] = None
 
-class TeamImpact(BaseModel):
+
+@dataclass
+class TeamImpact:
     team_id: int
     season: int
     metric: str
     value: float
 
-class TeamImpactSummary(BaseModel):
+
+@dataclass
+class TeamImpactSummary:
     team_id: int
     season: int
     metrics: Dict[str, float]
