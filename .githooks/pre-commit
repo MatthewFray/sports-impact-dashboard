@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -eu
+
+staged_files="$(git diff --cached --name-only --diff-filter=ACMR)"
+
+if [ -z "$staged_files" ]; then
+    exit 0
+fi
+
+echo "$staged_files" | grep -Eq '(^|/)\.env($|\.)' && {
+    echo "Commit blocked: .env files must not be committed."
+    echo "Use .env.example for safe examples instead."
+    exit 1
+}
+
+secret_pattern='(DATABASE_URL *=.*://.+:.+@|API_KEY *=|SECRET_KEY *=|PASSWORD *=|TOKEN *=|postgresql\+psycopg://[^[:space:]]+:[^[:space:]]+@)'
+
+if git diff --cached -- . ':(exclude).githooks/pre-commit' | grep -Eiq "$secret_pattern"; then
+    echo "Commit blocked: staged changes look like they may contain credentials or secrets."
+    echo "Please replace them with placeholder values before committing."
+    exit 1
+fi
+
+exit 0
