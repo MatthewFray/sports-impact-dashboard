@@ -9,7 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 
 if TYPE_CHECKING:
-    from app.models.player_game_stat import PlayerGameStat
+    from app.models.game_stat import GameStat
 
 
 class Game(Base):
@@ -23,7 +23,7 @@ class Game(Base):
     home_or_away: Mapped[str] = mapped_column(String(10))
     result: Mapped[str | None] = mapped_column(String(10))
 
-    player_stats: Mapped[list["PlayerGameStat"]] = relationship(
+    game_stats: Mapped[list["GameStat"]] = relationship(
         back_populates="game",
         cascade="all, delete-orphan",
     )

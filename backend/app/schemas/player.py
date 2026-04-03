@@ -5,10 +5,28 @@ from typing import Dict, List, Optional
 
 @dataclass
 class GameStat:
+    player_id: int
     game_id: str
     game_date: date
     opponent: str
     home_or_away: str
+    points: float = 0.0
+    assists: float = 0.0
+    rebounds: float = 0.0
+    steals: float = 0.0
+    blocks: float = 0.0
+    turnovers: float = 0.0
+    field_goal_pct: float = 0.0
+    three_point_pct: float = 0.0
+    free_throw_pct: float = 0.0
+    minutes: float = 0.0
+
+
+@dataclass
+class SeasonStat:
+    player_id: int
+    season: str
+    salary: Optional[float] = None
     points: float = 0.0
     assists: float = 0.0
     rebounds: float = 0.0
@@ -29,7 +47,8 @@ class Player:
     full_name: Optional[str] = None
     team: str = ""
     position: str = ""
-    season: str = ""
+    salary: Optional[float] = None
+    Overall_Earnings: Optional[float] = None
     points: float = 0.0
     assists: float = 0.0
     rebounds: float = 0.0
@@ -40,6 +59,7 @@ class Player:
     three_point_pct: float = 0.0
     free_throw_pct: float = 0.0
     minutes: float = 0.0
+    season_stats: List[SeasonStat] = field(default_factory=list)
     game_stats: List[GameStat] = field(default_factory=list)
 
     def __post_init__(self) -> None:

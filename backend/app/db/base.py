@@ -6,7 +6,7 @@ class Base(DeclarativeBase):
 
 
 # Import models so SQLAlchemy registers them on Base.metadata for migrations.
-from app.models import Game, Player, PlayerGameStat, Team  # noqa: E402,F401
+from app.models import Game, GameStat, Player, SeasonStat, Team  # noqa: E402,F401
 
 
 __all__ = ["Base"]
