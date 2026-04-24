@@ -1,8 +1,11 @@
 from datetime import date, timedelta
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 
+from app.db import get_db
 from app.schemas.player import GameStat, Player
+from app.services.player_impact import get_player_impact_profile
 from app.services.player_stats import get_recent_x_game_averages
 
 router = APIRouter(tags=["players"])
@@ -55,6 +58,15 @@ def get_player_recent_averages(player_id: int, games: int = 5):
         "games_used": games,
         "averages": averages,
     }
+
+
+@router.get("/players/{player_id}/impact")
+def get_player_impact(player_id: int, db: Session = Depends(get_db)):
+    impact_profile = get_player_impact_profile(db, player_id)
+    if impact_profile is None:
+        raise HTTPException(status_code=404, detail=f"Player {player_id} not found")
+
+    return impact_profile
 
 
 __all__ = ["router"]
